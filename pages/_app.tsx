@@ -11,7 +11,13 @@ const config:ThemeConfig = {
 
 const theme = extendTheme({config});
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            retry: false // do not retry failed requests by default
+        }
+    }
+});
 
 function MyApp({Component, pageProps}: AppProps) {
     return (

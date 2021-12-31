@@ -2,18 +2,19 @@ import {NextPage} from "next";
 import React, {useEffect} from "react";
 import {useRouter} from "next/router";
 import {useQuery} from "react-query";
-import {getUserProfile, getUsersPlaylists} from "../utilities/apiRequest";
-import {IApiError, ISpotifyPlaylist, ISpotifyPlaylistInfo, ISpotifyUser} from "../utilities/types";
-import {Container, Heading, Text, Box, Button} from "@chakra-ui/react";
-import {PlaylistItem} from "../components/PlaylistItem";
+import {getUserProfile} from "../utilities/apiRequest";
+import {Container, Heading, Text, Box, Button, AlertIcon, Alert, useDisclosure} from "@chakra-ui/react";
 import {ArrowRightIcon} from "@chakra-ui/icons";
-import styles from '../styles/Home.module.css';
+import {RecentlyPlayedTracks} from "../components/RecentlyPlayedTracks";
+import {constructAuthorizationUrl} from "../utilities/helpers";
+import {PlaylistBrowser} from "../components/PlaylistBrowser";
+import {TrackModal} from "../components/TrackModal";
 
 const Main: NextPage = () => {
 
     const router = useRouter();
-    const userProfile = useQuery('userProfile', getUserProfile)
-    const usersPlaylists = useQuery('usersPlaylists', getUsersPlaylists);
+    const userProfile = useQuery('userProfile', getUserProfile);
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
     const logout = (): void => {
         localStorage.clear();
@@ -35,31 +36,45 @@ const Main: NextPage = () => {
         )
     }
 
-    console.log(usersPlaylists);
+    if (userProfile.isError) {
+        return (
+            <Container mt={'1.5rem'}>
+                <Alert status='info'>
+                    <AlertIcon/>
+                    Your session has expired, please login again.
+                </Alert>
+                <Button m={'1rem'} colorScheme={'teal'} size={'md'}
+                        onClick={() => {
+                            router.push(constructAuthorizationUrl());
+                        }}>
+                    Login with Spotify
+                </Button>
+            </Container>
+        )
+    }
 
     return (
-        <Container mt={'1.5rem'} position={'relative'}>
-            <Button onClick={() => {
-                logout();
-            }}
-                    position={'absolute'}
-                    right={'5'}
-                    rightIcon={<ArrowRightIcon/>}>
-                Logout
-            </Button>
-            <Heading>Hi {userProfile.data?.display_name}!</Heading>
-            <Text mt={'1rem'}>Please select one of your playlists from the list below:</Text>
-            <Box display={'flex'} alignItems={'center'} flexDir={'column'}>
-                {usersPlaylists.data?.items.map((item: ISpotifyPlaylist, key: number) => {
-                    return (
-                        <PlaylistItem key={key}
-                                      name={item.name}
-                                      numberOfTracks={item.tracks.total}
-                                      playlistId={item.id}/>
-                    )
-                })}
+        <Box margin={['.75rem', '1.5rem', '3rem']}>
+            <Box width={'100%'} display={"flex"} justifyContent={'space-between'}>
+                <Heading>Hi {userProfile.data?.display_name}!</Heading>
+                <Button onClick={() => {
+                    logout();
+                }}
+                        rightIcon={<ArrowRightIcon/>}>
+                    Logout
+                </Button>
             </Box>
-        </Container>
+            <Box mt={'2rem'} display={{md: 'flex'}}>
+                <Box width={['100%', '100%', '50%']} padding={'1rem'}>
+                    <PlaylistBrowser/>
+                </Box>
+                <Box width={['100%', '100%', '50%']} padding={'1rem'}>
+                    <RecentlyPlayedTracks onOpen={onOpen}/>
+                </Box>
+            </Box>
+            <TrackModal isOpen={isOpen} onClose={onClose}/>
+        </Box>
+
     )
 }
 

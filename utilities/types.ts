@@ -6,7 +6,7 @@ interface ISpotifyImages {
 
 export interface ISpotifyPlaylist {
     collaborative: boolean,
-    descirption: string,
+    description: string,
     external_urls: {
         spotify: string,
     },
@@ -67,14 +67,47 @@ export interface ISpotifyPlaylistInfo<T> {
     total: number
 }
 
+export interface ISpotifyRecentTracks {
+    href: string,
+    items: ISpotifyTrackInfo[]
+    limit: number,
+    next: string,
+    cursors: any, // used to find the next set of items, pagination I guess?
+    total: number
+}
+
+export interface ISpotifyTrackInfo {
+    context: any,
+    played_at: Date,
+    track: ISpotifyTrack
+}
+
+export interface ISpotifyTrack {
+    artists: ISpotifyArtist[],
+    id: string,
+    name: string,
+    href: string,
+    duration_ms: number
+}
+
+export interface ISpotifyArtist {
+    href: string,
+    id: string,
+    name: string
+}
+
+export interface ISpotifyAudioFeatures {
+    acousticness: number,
+    danceability: number,
+    energy: number,
+    tempo: number,
+    valence: number
+
+}
+
 export interface IAuthUrlParams {
     accessToken: string,
     tokenType: string,
     expires: number,
     state: string
-}
-
-export interface IApiError {
-    status: number,
-    message: string
 }

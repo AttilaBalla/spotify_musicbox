@@ -1,4 +1,10 @@
-import {IApiError, ISpotifyPlaylist, ISpotifyPlaylistInfo, ISpotifyUser} from "./types";
+import {
+    ISpotifyAudioFeatures,
+    ISpotifyPlaylist,
+    ISpotifyPlaylistInfo,
+    ISpotifyRecentTracks,
+    ISpotifyUser
+} from "./types";
 
 function request<T>(url: string, method: string): Promise<T> {
     const options = {
@@ -12,13 +18,18 @@ function request<T>(url: string, method: string): Promise<T> {
 
     return fetch(`${process.env.NEXT_PUBLIC_SPOTIFY_BASE_URL}${url}`, options)
         .then((res) => {
-            if(res.status === 200) {
+            if (res.ok) {
                 return res.json();
+            } else {
+                console.log(res);
+                return Promise.reject({
+                    status: res.status,
+                    type: res.type
+                });
             }
         })
         .catch((error) => {
-            console.log(error);
-            return error;
+            return Promise.reject(error);
         });
 }
 
@@ -30,6 +41,14 @@ export function getUsersPlaylists(): Promise<ISpotifyPlaylistInfo<ISpotifyPlayli
     return request<ISpotifyPlaylistInfo<ISpotifyPlaylist>[]>('/me/playlists', 'GET');
 }
 
-export function getPlaylistItems(playlistId: string):Promise<ISpotifyPlaylistInfo<any>> {
+export function getPlaylistItems(playlistId: string): Promise<ISpotifyPlaylistInfo<any>> {
     return request<ISpotifyPlaylistInfo<any>>(`/playlists/${playlistId}/tracks`, 'GET');
+}
+
+export function getRecentlyPlayedTracks(): Promise<ISpotifyRecentTracks> {
+    return request<ISpotifyRecentTracks>('/me/player/recently-played', 'GET')
+}
+
+export function getAudioFeaturesOfMultipleTracks(trackIds: string): Promise<ISpotifyAudioFeatures[]> {
+    return request<ISpotifyAudioFeatures[]>(`/audio-features?ids=${trackIds}`, 'GET')
 }

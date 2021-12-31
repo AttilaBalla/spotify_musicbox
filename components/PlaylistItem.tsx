@@ -19,8 +19,12 @@ export const PlaylistItem: React.FC<IPlayListItem> = ({name, numberOfTracks, pla
              m={'1rem'}
              p={'1rem'}
              sx={{cursor: 'pointer'}}>
-            <Text fontSize={'xl'}>{name}</Text>
-            <Text as={'sub'}>{numberOfTracks} tracks</Text>
+            <Box sx={{flexBasis: '80%'}}>
+                <Text fontSize={'xl'}>{name}</Text>
+            </Box>
+            <Box>
+                <Text as={'sub'}>{numberOfTracks} tracks</Text>
+            </Box>
         </Box>
     )
 }

@@ -1,14 +1,25 @@
-import { IAuthUrlParams } from "./types";
+import {IAuthUrlParams, ISpotifyTrackInfo} from "./types";
 
 export function constructAuthorizationUrl(): string {
 
     const responseType = 'response_type=token';
     const clientId = `client_id=${process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID}`;
-    const scope = 'scope=user-read-private playlist-read-private';
+    const scope = 'scope=user-read-private playlist-read-private user-read-recently-played';
     const redirect_uri = 'redirect_uri=http://localhost:3000';
     const state = `state=${generateRandomString(16)}`; // put some properly generated random gibberish here
 
     return `${process.env.NEXT_PUBLIC_SPOTIFY_AUTH_URL}?${responseType}&${clientId}&${scope}&${redirect_uri}&${state}`
+}
+
+export function createTrackListIdString(recentTracks: ISpotifyTrackInfo[]): string {
+
+    let result = '';
+
+    for (const recentTrack of recentTracks) {
+        result += `${recentTrack.track.id},`
+    }
+
+    return result;
 }
 
 export function parseHashParamsFromUrl(url: string):IAuthUrlParams {
