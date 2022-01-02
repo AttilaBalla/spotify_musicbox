@@ -2,16 +2,20 @@ import React from "react";
 import {Box, Text} from "@chakra-ui/react";
 import {useQuery} from "react-query";
 import {getAudioFeaturesOfMultipleTracks, getRecentlyPlayedTracks} from "../utilities/apiRequest";
-import classes from '../styles/recentlyPlayed.module.css'
-import {createTrackListIdString} from "../utilities/helpers";
+import {createTrackListIdString, findAudioFeaturesOfTrack} from "../utilities/helpers";
+import {TrackItem} from "./TrackItem";
+import {blankAudioFeatures} from "../utilities/defaults";
+import {IModalParams} from "../utilities/types";
 
 interface IProps {
-    onOpen: () => void,
+    openModal: (modalParams: IModalParams) => void,
 }
 
-export const RecentlyPlayedTracks: React.FC<IProps> = ({onOpen}) => {
+export const RecentlyPlayedTracks: React.FC<IProps> = ({openModal}) => {
 
     const recentTracks = useQuery('getRecentTracks', getRecentlyPlayedTracks);
+
+    // obtain audio features of the last played tracks
     let trackIds = '';
 
     if (recentTracks.data?.items.length) {
@@ -24,15 +28,27 @@ export const RecentlyPlayedTracks: React.FC<IProps> = ({onOpen}) => {
             enabled: !!recentTracks.data?.items.length
         })
 
-    console.log(audioFeatures.data);
+    if (!recentTracks.data) {
+        return <div>Loading...</div>
+    }
+
+    const recentTrackHistory = recentTracks.data.items.map((item) => {
+        return {
+            trackInfo: item,
+            audioFeatures: audioFeatures.data ?
+                findAudioFeaturesOfTrack(audioFeatures.data.audio_features, item.track.id) :
+                blankAudioFeatures
+        }
+    })
 
     return (
-        <Box onClick={onOpen}>
+        <Box>
             <Text mb={'1rem'}>Previously played tracks</Text>
-            {recentTracks.data?.items.map((item, key) => {
-                return <div className={classes.recentlyPlayedItem} key={key}>
-                    <Text sx={{opacity: '100%'}}>{item.track.artists[0].name} - {item.track.name}</Text>
-                </div>
+            {recentTrackHistory.map((item, key) => {
+                return <TrackItem item={item.trackInfo}
+                                  audioFeatures={item.audioFeatures}
+                                  openModal={openModal}
+                                  key={key}/>
             })}
         </Box>
     )

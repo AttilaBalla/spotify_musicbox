@@ -49,6 +49,6 @@ export function getRecentlyPlayedTracks(): Promise<ISpotifyRecentTracks> {
     return request<ISpotifyRecentTracks>('/me/player/recently-played', 'GET')
 }
 
-export function getAudioFeaturesOfMultipleTracks(trackIds: string): Promise<ISpotifyAudioFeatures[]> {
-    return request<ISpotifyAudioFeatures[]>(`/audio-features?ids=${trackIds}`, 'GET')
+export function getAudioFeaturesOfMultipleTracks(trackIds: string): Promise<{ audio_features: ISpotifyAudioFeatures[] }> {
+    return request<{ audio_features: ISpotifyAudioFeatures[] }>(`/audio-features?ids=${trackIds}`, 'GET')
 }

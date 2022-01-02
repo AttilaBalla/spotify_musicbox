@@ -97,12 +97,18 @@ export interface ISpotifyArtist {
 }
 
 export interface ISpotifyAudioFeatures {
+    id: string,
     acousticness: number,
     danceability: number,
     energy: number,
     tempo: number,
     valence: number
 
+}
+
+export interface IModalParams {
+    track: ISpotifyTrack,
+    audioFeatures: ISpotifyAudioFeatures
 }
 
 export interface IAuthUrlParams {

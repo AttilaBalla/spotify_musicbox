@@ -1,4 +1,5 @@
-import {IAuthUrlParams, ISpotifyTrackInfo} from "./types";
+import {IAuthUrlParams, ISpotifyAudioFeatures, ISpotifyTrackInfo} from "./types";
+import {blankAudioFeatures} from "./defaults";
 
 export function constructAuthorizationUrl(): string {
 
@@ -22,30 +23,43 @@ export function createTrackListIdString(recentTracks: ISpotifyTrackInfo[]): stri
     return result;
 }
 
-export function parseHashParamsFromUrl(url: string):IAuthUrlParams {
+export function parseHashParamsFromUrl(url: string): IAuthUrlParams {
     const result = {} as IAuthUrlParams;
     const parts = url.split('&');
 
     for (const part of parts) {
-        if(part.includes('access_token')) {
+        if (part.includes('access_token')) {
             result.accessToken = part.split('=')[1];
         }
 
-        if(part.includes('token_type')) {
+        if (part.includes('token_type')) {
             result.tokenType = part.split('=')[1];
         }
 
-        if(part.includes('expires_in')) {
+        if (part.includes('expires_in')) {
             result.expires = parseInt(part.split('=')[1]);
         }
 
-        if(part.includes('state')) {
+        if (part.includes('state')) {
             result.state = part.split('=')[1];
         }
     }
 
     return result;
 }
+
+export const findAudioFeaturesOfTrack = (audioFeatures: ISpotifyAudioFeatures[], trackId: string): ISpotifyAudioFeatures => {
+    const result = audioFeatures.find((item: ISpotifyAudioFeatures) => {
+        return item.id === trackId
+    });
+
+    if (result) {
+        return result;
+    } else {
+        return blankAudioFeatures
+    }
+}
+
 
 function generateRandomString(length: number): string {
     let text = '';

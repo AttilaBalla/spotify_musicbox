@@ -1,5 +1,5 @@
 import {NextPage} from "next";
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {useRouter} from "next/router";
 import {useQuery} from "react-query";
 import {getUserProfile} from "../utilities/apiRequest";
@@ -9,16 +9,24 @@ import {RecentlyPlayedTracks} from "../components/RecentlyPlayedTracks";
 import {constructAuthorizationUrl} from "../utilities/helpers";
 import {PlaylistBrowser} from "../components/PlaylistBrowser";
 import {TrackModal} from "../components/TrackModal";
+import {IModalParams} from "../utilities/types";
 
 const Main: NextPage = () => {
 
     const router = useRouter();
+    const [modalTrackInfo, setModalTrackInfo] = useState<IModalParams>();
     const userProfile = useQuery('userProfile', getUserProfile);
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const logout = (): void => {
         localStorage.clear();
         router.push('/');
+    }
+
+    const openModal = (modalParams: IModalParams):void => {
+        console.log(modalParams);
+        setModalTrackInfo(modalParams);
+        onOpen();
     }
 
     // have to put this into useEffect, there is no browser API support on server side
@@ -69,10 +77,10 @@ const Main: NextPage = () => {
                     <PlaylistBrowser/>
                 </Box>
                 <Box width={['100%', '100%', '50%']} padding={'1rem'}>
-                    <RecentlyPlayedTracks onOpen={onOpen}/>
+                    <RecentlyPlayedTracks openModal={openModal}/>
                 </Box>
             </Box>
-            <TrackModal isOpen={isOpen} onClose={onClose}/>
+            <TrackModal isOpen={isOpen} onClose={onClose} trackInfo={modalTrackInfo}/>
         </Box>
 
     )
