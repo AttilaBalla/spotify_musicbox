@@ -77,8 +77,8 @@ export interface ISpotifyRecentTracks {
 }
 
 export interface ISpotifyTrackInfo {
-    context: any,
-    played_at: Date,
+    context?: any,
+    played_at?: Date,
     track: ISpotifyTrack
 }
 

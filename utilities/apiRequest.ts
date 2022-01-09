@@ -2,7 +2,7 @@ import {
     ISpotifyAudioFeatures,
     ISpotifyPlaylist,
     ISpotifyPlaylistInfo,
-    ISpotifyRecentTracks,
+    ISpotifyRecentTracks, ISpotifyTrackInfo,
     ISpotifyUser
 } from "./types";
 
@@ -38,15 +38,15 @@ export function getUserProfile(): Promise<ISpotifyUser> {
 }
 
 export function getUsersPlaylists(): Promise<ISpotifyPlaylistInfo<ISpotifyPlaylist>[]> {
-    return request<ISpotifyPlaylistInfo<ISpotifyPlaylist>[]>('/me/playlists', 'GET');
+    return request<ISpotifyPlaylistInfo<ISpotifyPlaylist>[]>(`/me/playlists`, 'GET');
 }
 
-export function getPlaylistItems(playlistId: string): Promise<ISpotifyPlaylistInfo<any>> {
-    return request<ISpotifyPlaylistInfo<any>>(`/playlists/${playlistId}/tracks`, 'GET');
+export function getPlaylistItems(playlistId: string, limit: number, offset: number): Promise<ISpotifyPlaylistInfo<ISpotifyTrackInfo>> {
+    return request<ISpotifyPlaylistInfo<ISpotifyTrackInfo>>(`/playlists/${playlistId}/tracks?limit=${limit}&offset=${offset}`, 'GET');
 }
 
 export function getRecentlyPlayedTracks(): Promise<ISpotifyRecentTracks> {
-    return request<ISpotifyRecentTracks>('/me/player/recently-played', 'GET')
+    return request<ISpotifyRecentTracks>(`/me/player/recently-played`, 'GET')
 }
 
 export function getAudioFeaturesOfMultipleTracks(trackIds: string): Promise<{ audio_features: ISpotifyAudioFeatures[] }> {

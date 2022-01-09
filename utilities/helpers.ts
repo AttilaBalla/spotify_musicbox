@@ -48,7 +48,17 @@ export function parseHashParamsFromUrl(url: string): IAuthUrlParams {
     return result;
 }
 
-export const findAudioFeaturesOfTrack = (audioFeatures: ISpotifyAudioFeatures[], trackId: string): ISpotifyAudioFeatures => {
+export function convertMsToMinutesSeconds(duration: number): { minutes: number, seconds: string } {
+
+    const seconds = Math.floor((duration / 1000) % 60);
+
+    return {
+        minutes: (duration / (1000 * 60)) % 60,
+        seconds: seconds > 9 ? seconds.toString().padEnd(2, '0') : seconds.toString().padStart(2, '0')
+    }
+}
+
+export function findAudioFeaturesOfTrack(audioFeatures: ISpotifyAudioFeatures[], trackId: string): ISpotifyAudioFeatures {
     const result = audioFeatures.find((item: ISpotifyAudioFeatures) => {
         return item.id === trackId
     });

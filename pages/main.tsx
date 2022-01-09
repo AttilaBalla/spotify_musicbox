@@ -16,14 +16,14 @@ const Main: NextPage = () => {
     const router = useRouter();
     const [modalTrackInfo, setModalTrackInfo] = useState<IModalParams>();
     const userProfile = useQuery('userProfile', getUserProfile);
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const {isOpen, onOpen, onClose} = useDisclosure();
 
     const logout = (): void => {
         localStorage.clear();
         router.push('/');
     }
 
-    const openModal = (modalParams: IModalParams):void => {
+    const openModal = (modalParams: IModalParams): void => {
         console.log(modalParams);
         setModalTrackInfo(modalParams);
         onOpen();
@@ -34,7 +34,7 @@ const Main: NextPage = () => {
         if (localStorage.getItem('accessToken') === null) {
             router.push('/');
         }
-    }, []);
+    }, [router]);
 
     if (userProfile.isLoading) {
         return (
@@ -62,27 +62,28 @@ const Main: NextPage = () => {
     }
 
     return (
-        <Box margin={['.75rem', '1.5rem', '3rem']}>
-            <Box width={'100%'} display={"flex"} justifyContent={'space-between'}>
-                <Heading>Hi {userProfile.data?.display_name}!</Heading>
-                <Button onClick={() => {
-                    logout();
-                }}
-                        rightIcon={<ArrowRightIcon/>}>
-                    Logout
-                </Button>
-            </Box>
-            <Box mt={'2rem'} display={{md: 'flex'}}>
-                <Box width={['100%', '100%', '50%']} padding={'1rem'}>
-                    <PlaylistBrowser/>
+        <Box display={'flex'} justifyContent={'center'}>
+            <Box margin={['.75rem', '1.5rem', '3rem']} sx={{maxWidth: '1300px'}}>
+                <Box width={'100%'} display={"flex"} justifyContent={'space-between'}>
+                    <Heading>Hi {userProfile.data?.display_name}!</Heading>
+                    <Button onClick={() => {
+                        logout();
+                    }}
+                            rightIcon={<ArrowRightIcon/>}>
+                        Logout
+                    </Button>
                 </Box>
-                <Box width={['100%', '100%', '50%']} padding={'1rem'}>
-                    <RecentlyPlayedTracks openModal={openModal}/>
+                <Box mt={'2rem'} display={{md: 'flex'}}>
+                    <Box width={['100%', '100%', '50%']} padding={'1rem'}>
+                        <PlaylistBrowser openModal={openModal}/>
+                    </Box>
+                    <Box width={['100%', '100%', '50%']} padding={'1rem'}>
+                        <RecentlyPlayedTracks openModal={openModal}/>
+                    </Box>
                 </Box>
+                <TrackModal isOpen={isOpen} onClose={onClose} trackInfo={modalTrackInfo}/>
             </Box>
-            <TrackModal isOpen={isOpen} onClose={onClose} trackInfo={modalTrackInfo}/>
         </Box>
-
     )
 }
 
