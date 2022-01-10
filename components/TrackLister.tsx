@@ -1,6 +1,6 @@
 import React from "react";
 import {TrackItem} from "./TrackItem";
-import {Box} from "@chakra-ui/react";
+import {Box, Spinner} from "@chakra-ui/react";
 import {useQuery} from "react-query";
 import {getAudioFeaturesOfMultipleTracks} from "../utilities/apiRequest";
 import {createTrackListIdString, findAudioFeaturesOfTrack} from "../utilities/helpers";
@@ -28,7 +28,7 @@ export const TrackLister: React.FC<IProps> = ({playListTracks, openModal}) => {
         })
 
     if (audioFeatures.isLoading) {
-        return <div>Loading...</div>
+        return <Spinner color='blue.500' />
     }
 
     const trackList = playListTracks.items.map((item) => {

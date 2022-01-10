@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Alert, Text, AlertIcon, Box, Button, Select, VStack} from "@chakra-ui/react";
+import {Alert, Text, AlertIcon, Box, Button, Select, VStack, Spinner} from "@chakra-ui/react";
 import {IModalParams, ISpotifyPlaylist} from "../utilities/types";
 import {useQuery} from "react-query";
 import {getPlaylistItems, getUsersPlaylists} from "../utilities/apiRequest";
@@ -49,9 +49,10 @@ export const PlaylistBrowser: React.FC<IProps> = ({openModal}) => {
                         ${selectedPlayList.data.total} in total`}
                     </Text>
                 }
-                <Button disabled={!selectedPlayList.data || !selectedPlayList.data.next} rightIcon={<ChevronRightIcon/>} onClick={() => {
-                    setOffset(offset + limit);
-                }}>Next</Button>
+                <Button disabled={!selectedPlayList.data || !selectedPlayList.data.next} rightIcon={<ChevronRightIcon/>}
+                        onClick={() => {
+                            setOffset(offset + limit);
+                        }}>Next</Button>
             </Box>
             {selectedPlayList.data && <TrackLister playListTracks={selectedPlayList.data} openModal={openModal}/>}
         </VStack>

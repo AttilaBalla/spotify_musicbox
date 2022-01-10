@@ -3,8 +3,8 @@ import React, {useEffect, useState} from "react";
 import {useRouter} from "next/router";
 import {useQuery} from "react-query";
 import {getUserProfile} from "../utilities/apiRequest";
-import {Container, Heading, Text, Box, Button, AlertIcon, Alert, useDisclosure} from "@chakra-ui/react";
-import {ArrowRightIcon} from "@chakra-ui/icons";
+import {Container, Heading, Box, Button, AlertIcon, Alert, useDisclosure, Spinner} from "@chakra-ui/react";
+import {ArrowRightIcon, CopyIcon} from "@chakra-ui/icons";
 import {RecentlyPlayedTracks} from "../components/RecentlyPlayedTracks";
 import {constructAuthorizationUrl} from "../utilities/helpers";
 import {PlaylistBrowser} from "../components/PlaylistBrowser";
@@ -39,7 +39,7 @@ const Main: NextPage = () => {
     if (userProfile.isLoading) {
         return (
             <Container>
-                <Text>Loading...</Text>
+                <Spinner color='blue.500' />
             </Container>
         )
     }
@@ -65,7 +65,12 @@ const Main: NextPage = () => {
         <Box display={'flex'} justifyContent={'center'}>
             <Box margin={['.75rem', '1.5rem', '3rem']} sx={{maxWidth: '1300px'}}>
                 <Box width={'100%'} display={"flex"} justifyContent={'space-between'}>
-                    <Heading>Hi {userProfile.data?.display_name}!</Heading>
+                    <Box display={'flex'}>
+                        <Heading mr={'2rem'}>Hi {userProfile.data?.display_name}!</Heading>
+                        <Button colorScheme='blue' leftIcon={<CopyIcon/>}>
+                            Generate Playlist
+                        </Button>
+                    </Box>
                     <Button onClick={() => {
                         logout();
                     }}
