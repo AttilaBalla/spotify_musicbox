@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Alert, Text, AlertIcon, Box, Button, Select, VStack, Spinner} from "@chakra-ui/react";
+import {Text, Box, Button, Select, VStack} from "@chakra-ui/react";
 import {IModalParams, ISpotifyPlaylist} from "../utilities/types";
 import {useQuery} from "react-query";
 import {getPlaylistItems, getUsersPlaylists} from "../utilities/apiRequest";
@@ -26,10 +26,6 @@ export const PlaylistBrowser: React.FC<IProps> = ({openModal}) => {
 
     return (
         <VStack spacing={'1.5rem'}>
-            <Alert status={'info'} mb={'1rem'}>
-                <AlertIcon/>
-                {'Select a playlist to display it\'s tracks. You can get detailed information about a track by clicking on it in the list'}
-            </Alert>
             <Select onChange={(event) => {
                 setSelectedPlaylistId(event.target.value)
             }} placeholder={'select one of your playlists...'}>

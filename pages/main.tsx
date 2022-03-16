@@ -10,6 +10,8 @@ import {constructAuthorizationUrl} from "../utilities/helpers";
 import {PlaylistBrowser} from "../components/PlaylistBrowser";
 import {TrackModal} from "../components/TrackModal";
 import {IModalParams} from "../utilities/types";
+import {MusicPlayer} from "../components/MusicPlayer";
+import {MdLogout} from "react-icons/md";
 
 const Main: NextPage = () => {
 
@@ -74,7 +76,7 @@ const Main: NextPage = () => {
                     <Button onClick={() => {
                         logout();
                     }}
-                            rightIcon={<ArrowRightIcon/>}>
+                            rightIcon={<MdLogout/>}>
                         Logout
                     </Button>
                 </Box>
@@ -83,6 +85,7 @@ const Main: NextPage = () => {
                         <PlaylistBrowser openModal={openModal}/>
                     </Box>
                     <Box width={['100%', '100%', '50%']} padding={'1rem'}>
+                        <MusicPlayer/>
                         <RecentlyPlayedTracks openModal={openModal}/>
                     </Box>
                 </Box>

@@ -1,3 +1,15 @@
 .logoutButton {
     position: absolute;
 }
+
+.musicPlayer {
+    padding: 2rem 0;
+    border-radius: 5px;
+    background-color: #273144;
+}
+
+.musicPlayerText {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

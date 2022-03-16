@@ -83,6 +83,7 @@ export interface ISpotifyTrackInfo {
 }
 
 export interface ISpotifyTrack {
+    album: ISpotifyAlbum;
     artists: ISpotifyArtist[],
     id: string,
     name: string,
@@ -96,6 +97,20 @@ export interface ISpotifyArtist {
     name: string
 }
 
+export interface ISpotifyAlbum {
+    type: string;
+    images: ISpotifyAlbumImages[];
+    id: string;
+    name: string;
+    total_tracks: number;
+}
+
+export interface ISpotifyAlbumImages {
+    url: string;
+    width: number;
+    height: number;
+}
+
 export interface ISpotifyAudioFeatures {
     id: string,
     acousticness: number,
@@ -103,7 +118,14 @@ export interface ISpotifyAudioFeatures {
     energy: number,
     tempo: number,
     valence: number
+}
 
+export interface ISpotifyPlaybackState {
+    is_playing: boolean;
+    progress_ms: number;
+    repeat_state: boolean;
+    shuffle_state: boolean;
+    item: ISpotifyTrack;
 }
 
 export interface IModalParams {

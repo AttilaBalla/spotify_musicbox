@@ -15,7 +15,6 @@ export const RecentlyPlayedTracks: React.FC<IProps> = ({openModal}) => {
 
     return (
         <Box>
-            <Text mb={'1rem'}>Previously played tracks</Text>
             {recentTracks.data && <TrackLister playListTracks={recentTracks.data} openModal={openModal}/>}
         </Box>
     )

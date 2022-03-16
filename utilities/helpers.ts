@@ -5,7 +5,7 @@ export function constructAuthorizationUrl(): string {
 
     const responseType = 'response_type=token';
     const clientId = `client_id=${process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID}`;
-    const scope = 'scope=user-read-private playlist-read-private user-read-recently-played';
+    const scope = 'scope=user-read-private playlist-read-private user-read-recently-played user-read-playback-state user-modify-playback-state';
     const redirect_uri = 'redirect_uri=http://localhost:3000';
     const state = `state=${generateRandomString(16)}`; // put some properly generated random gibberish here
 

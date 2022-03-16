@@ -1,5 +1,4 @@
 import type {NextPage} from 'next'
-import styles from '../styles/Home.module.css'
 import {Box, Button, Container, Heading} from "@chakra-ui/react";
 import {useRouter} from "next/router";
 import {constructAuthorizationUrl, parseHashParamsFromUrl} from "../utilities/helpers";

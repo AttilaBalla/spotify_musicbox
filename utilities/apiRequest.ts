@@ -1,10 +1,11 @@
 import {
-    ISpotifyAudioFeatures,
+    ISpotifyAudioFeatures, ISpotifyPlaybackState,
     ISpotifyPlaylist,
     ISpotifyPlaylistInfo,
     ISpotifyRecentTracks, ISpotifyTrackInfo,
     ISpotifyUser
 } from "./types";
+import {methodNotAllowed} from "@hapi/boom";
 
 function request<T>(url: string, method: string): Promise<T> {
     const options = {
@@ -46,9 +47,33 @@ export function getPlaylistItems(playlistId: string, limit: number, offset: numb
 }
 
 export function getRecentlyPlayedTracks(): Promise<ISpotifyRecentTracks> {
-    return request<ISpotifyRecentTracks>(`/me/player/recently-played`, 'GET')
+    return request<ISpotifyRecentTracks>(`/me/player/recently-played`, 'GET');
 }
 
 export function getAudioFeaturesOfMultipleTracks(trackIds: string): Promise<{ audio_features: ISpotifyAudioFeatures[] }> {
-    return request<{ audio_features: ISpotifyAudioFeatures[] }>(`/audio-features?ids=${trackIds}`, 'GET')
+    return request<{ audio_features: ISpotifyAudioFeatures[] }>(`/audio-features?ids=${trackIds}`, 'GET');
+}
+
+export function getCurrentPlaybackState(): Promise<ISpotifyPlaybackState> {
+    return request<ISpotifyPlaybackState>('/me/player', 'GET');
+}
+
+export function skipToNextTrack():Promise<void> {
+    return request('/me/player/next', 'POST');
+}
+
+export function skipToPreviousTrack():Promise<void> {
+    return request('/me/player/previous', 'POST');
+}
+
+export function startOrResumePlayback():Promise<void> {
+    return request('/me/player/play', 'PUT');
+}
+
+export function pausePlayback():Promise<void> {
+    return request('/me/player/pause', 'PUT');
+}
+
+export function togglePlaybackShuffle(state: boolean):Promise<void> {
+    return request('/me/player/shuffle', 'PUT');
 }
