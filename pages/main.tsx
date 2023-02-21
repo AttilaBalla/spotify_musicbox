@@ -1,10 +1,7 @@
 import {NextPage} from "next";
 import React, {useEffect, useState} from "react";
 import {useRouter} from "next/router";
-import {useQuery} from "react-query";
 import {getUserProfile} from "../utilities/apiRequest";
-import {Container, Heading, Box, Button, AlertIcon, Alert, useDisclosure, Spinner} from "@chakra-ui/react";
-import {ArrowRightIcon, CopyIcon} from "@chakra-ui/icons";
 import {RecentlyPlayedTracks} from "../components/RecentlyPlayedTracks";
 import {constructAuthorizationUrl} from "../utilities/helpers";
 import {PlaylistBrowser} from "../components/PlaylistBrowser";
@@ -12,12 +9,23 @@ import {TrackModal} from "../components/TrackModal";
 import {IModalParams} from "../utilities/types";
 import {MusicPlayer} from "../components/MusicPlayer";
 import {MdLogout} from "react-icons/md";
+import {useQuery} from "@tanstack/react-query";
+import {Alert, Box, Button, Container, Stack, Typography} from "@mui/material";
+import {useDisclosure} from "@chakra-ui/hooks";
+import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest';
+import LogoutIcon from '@mui/icons-material/Logout';
+import PersonIcon from '@mui/icons-material/Person';
+import {MainHeader} from "../material/MainHeader";
+
 
 const Main: NextPage = () => {
 
     const router = useRouter();
     const [modalTrackInfo, setModalTrackInfo] = useState<IModalParams>();
-    const userProfile = useQuery('userProfile', getUserProfile);
+    const userProfile = useQuery({
+        queryKey: ['userProfile'],
+        queryFn: getUserProfile
+    });
     const {isOpen, onOpen, onClose} = useDisclosure();
 
     const logout = (): void => {
@@ -26,7 +34,6 @@ const Main: NextPage = () => {
     }
 
     const openModal = (modalParams: IModalParams): void => {
-        console.log(modalParams);
         setModalTrackInfo(modalParams);
         onOpen();
     }
@@ -41,55 +48,35 @@ const Main: NextPage = () => {
     if (userProfile.isLoading) {
         return (
             <Container>
-                <Spinner color='blue.500' />
+                Loading spinner here
             </Container>
         )
     }
 
     if (userProfile.isError) {
         return (
-            <Container mt={'1.5rem'}>
-                <Alert status='info'>
-                    <AlertIcon/>
+            <Container>
+                <Alert severity={'error'}>
                     Your session has expired, please login again.
                 </Alert>
-                <Button m={'1rem'} colorScheme={'teal'} size={'md'}
-                        onClick={() => {
-                            router.push(constructAuthorizationUrl());
-                        }}>
-                    Login with Spotify
-                </Button>
             </Container>
         )
     }
 
     return (
-        <Box display={'flex'} justifyContent={'center'}>
-            <Box margin={['.75rem', '1.5rem', '3rem']} sx={{maxWidth: '1300px'}}>
-                <Box width={'100%'} display={"flex"} justifyContent={'space-between'}>
-                    <Box display={'flex'}>
-                        <Heading mr={'2rem'}>Hi {userProfile.data?.display_name}!</Heading>
-                        <Button colorScheme='blue' leftIcon={<CopyIcon/>}>
-                            Generate Playlist
-                        </Button>
-                    </Box>
-                    <Button onClick={() => {
-                        logout();
-                    }}
-                            rightIcon={<MdLogout/>}>
-                        Logout
-                    </Button>
-                </Box>
-                <Box mt={'2rem'} display={{md: 'flex'}}>
-                    <Box width={['100%', '100%', '50%']} padding={'1rem'}>
-                        <PlaylistBrowser openModal={openModal}/>
-                    </Box>
-                    <Box width={['100%', '100%', '50%']} padding={'1rem'}>
-                        <MusicPlayer/>
-                        <RecentlyPlayedTracks openModal={openModal}/>
-                    </Box>
-                </Box>
-                <TrackModal isOpen={isOpen} onClose={onClose} trackInfo={modalTrackInfo}/>
+        <Box>
+            <Box sx={{maxWidth: '1300px', marginTop: '1rem'}}>
+                <MainHeader displayName={userProfile.data.display_name}/>
+                {/*<Box mt={'2rem'} display={{md: 'flex'}}>*/}
+                {/*    <Box width={['100%', '100%', '50%']} padding={'1rem'}>*/}
+                {/*        <PlaylistBrowser openModal={openModal}/>*/}
+                {/*    </Box>*/}
+                {/*    <Box width={['100%', '100%', '50%']} padding={'1rem'}>*/}
+                {/*        <MusicPlayer/>*/}
+                {/*        <RecentlyPlayedTracks openModal={openModal}/>*/}
+                {/*    </Box>*/}
+                {/*</Box>*/}
+                {/*<TrackModal isOpen={isOpen} onClose={onClose} trackInfo={modalTrackInfo}/>*/}
             </Box>
         </Box>
     )

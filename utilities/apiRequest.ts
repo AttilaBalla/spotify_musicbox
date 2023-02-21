@@ -5,7 +5,6 @@ import {
     ISpotifyRecentTracks, ISpotifyTrackInfo,
     ISpotifyUser
 } from "./types";
-import {methodNotAllowed} from "@hapi/boom";
 
 function request<T>(url: string, method: string): Promise<T> {
     const options = {

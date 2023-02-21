@@ -1,6 +1,5 @@
 import React from "react";
 import {Box, Image, Text, IconButton} from "@chakra-ui/react";
-import {useMutation, useQuery} from "react-query";
 import {
     getCurrentPlaybackState,
     pausePlayback,
@@ -11,6 +10,7 @@ import {
 import {ArrowLeftIcon, ArrowRightIcon} from "@chakra-ui/icons";
 import {MdOutlinePlayArrow} from 'react-icons/md';
 import classes from '../styles/Main.module.css';
+import {useMutation, useQuery} from "@tanstack/react-query";
 
 export const MusicPlayer: React.FC = () => {
 

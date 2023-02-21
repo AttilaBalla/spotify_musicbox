@@ -1,11 +1,11 @@
 import React from "react";
 import {TrackItem} from "./TrackItem";
 import {Box, Spinner} from "@chakra-ui/react";
-import {useQuery} from "react-query";
 import {getAudioFeaturesOfMultipleTracks} from "../utilities/apiRequest";
 import {createTrackListIdString, findAudioFeaturesOfTrack} from "../utilities/helpers";
 import {blankAudioFeatures} from "../utilities/defaults";
 import {IModalParams, ISpotifyPlaylistInfo, ISpotifyRecentTracks, ISpotifyTrackInfo} from "../utilities/types";
+import {useQuery} from "@tanstack/react-query";
 
 interface IProps {
     playListTracks: ISpotifyPlaylistInfo<ISpotifyTrackInfo> | ISpotifyRecentTracks,

@@ -1,16 +1,14 @@
 import React from "react";
-import '../styles/globals.css'
 import type {AppProps} from 'next/app'
-import {ChakraProvider, ThemeConfig} from "@chakra-ui/react";
-import {extendTheme} from "@chakra-ui/react";
-import {QueryClient, QueryClientProvider} from "react-query";
+import {theme} from "../utilities/theme";
+import {Container, CssBaseline, ThemeProvider} from "@mui/material";
+import {
+    QueryClient,
+    QueryClientProvider,
+} from '@tanstack/react-query'
+import {makeStyles} from "tss-react/mui";
+import {createEmotionSsrAdvancedApproach} from "tss-react/next/pagesDir";
 
-const config: ThemeConfig = {
-    initialColorMode: 'dark',
-    useSystemColorMode: false
-}
-
-const theme = extendTheme({config});
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -20,14 +18,33 @@ const queryClient = new QueryClient({
     }
 });
 
-function MyApp({Component, pageProps}: AppProps) {
+const useStyles = makeStyles()(
+    (theme) => ({})
+);
+
+const {
+    augmentDocumentWithEmotionCache,
+    withAppEmotionCache
+} = createEmotionSsrAdvancedApproach({"key": "css"});
+
+export {augmentDocumentWithEmotionCache};
+
+function CustomApp({Component, pageProps}: AppProps) {
+
+    const {classes} = useStyles();
+
     return (
         <QueryClientProvider client={queryClient}>
-            <ChakraProvider resetCSS theme={theme}>
-                <Component {...pageProps} />
-            </ChakraProvider>
+            <ThemeProvider theme={theme}>
+                <CssBaseline/>
+                <main>
+                    <Container>
+                        <Component {...pageProps} />
+                    </Container>
+                </main>
+            </ThemeProvider>
         </QueryClientProvider>
     )
 }
 
-export default MyApp
+export default withAppEmotionCache(CustomApp);

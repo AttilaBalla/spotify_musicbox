@@ -1,9 +1,9 @@
 import React from "react";
 import {Box, Text} from "@chakra-ui/react";
-import {useQuery} from "react-query";
 import {getRecentlyPlayedTracks} from "../utilities/apiRequest";
 import {IModalParams} from "../utilities/types";
 import {TrackLister} from "./TrackLister";
+import { useQuery } from "@tanstack/react-query";
 
 interface IProps {
     openModal: (modalParams: IModalParams) => void,
@@ -11,7 +11,7 @@ interface IProps {
 
 export const RecentlyPlayedTracks: React.FC<IProps> = ({openModal}) => {
 
-    const recentTracks = useQuery('getRecentTracks', getRecentlyPlayedTracks);
+    const recentTracks = useQuery(['getRecentTracks'], getRecentlyPlayedTracks);
 
     return (
         <Box>

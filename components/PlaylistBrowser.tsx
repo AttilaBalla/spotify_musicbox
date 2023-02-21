@@ -1,10 +1,10 @@
 import React, {useState} from "react";
 import {Text, Box, Button, Select, VStack} from "@chakra-ui/react";
 import {IModalParams, ISpotifyPlaylist} from "../utilities/types";
-import {useQuery} from "react-query";
 import {getPlaylistItems, getUsersPlaylists} from "../utilities/apiRequest";
 import {TrackLister} from "./TrackLister";
 import {ChevronLeftIcon, ChevronRightIcon} from "@chakra-ui/icons";
+import {useQuery} from "@tanstack/react-query";
 
 interface IProps {
     openModal: (modalParams: IModalParams) => void,
