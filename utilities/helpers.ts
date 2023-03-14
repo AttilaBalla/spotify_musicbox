@@ -1,4 +1,9 @@
-import {IAuthUrlParams, ISpotifyAudioFeatures, ISpotifyTrackInfo} from "./types";
+import {
+    IAuthUrlParams,
+    ISpotifyAudioFeatures,
+    ISpotifyPlaylist,
+    ISpotifyTrackInfo
+} from "./types";
 import {blankAudioFeatures} from "./defaults";
 
 export function constructAuthorizationUrl(): string {
@@ -68,6 +73,15 @@ export function findAudioFeaturesOfTrack(audioFeatures: ISpotifyAudioFeatures[],
     } else {
         return blankAudioFeatures
     }
+}
+
+export function createAutoCompleteOptions(playlists: ISpotifyPlaylist[] | undefined) {
+
+    if(!playlists) return [];
+
+    return playlists.map((playlist) => {
+        return {label: playlist.name, id: playlist.id}
+    })
 }
 
 

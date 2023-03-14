@@ -59,7 +59,7 @@ export interface ISpotifyUser {
 
 export interface ISpotifyPlaylistInfo<T> {
     href: string,
-    items: T[],
+    items: T,
     limit: number,
     next: string,
     offset: number,

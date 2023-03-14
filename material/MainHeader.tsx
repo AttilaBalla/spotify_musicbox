@@ -3,7 +3,7 @@ import {Box, Button, Stack, Typography} from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import SettingsSuggestIcon from "@mui/icons-material/SettingsSuggest";
 import LogoutIcon from "@mui/icons-material/Logout";
-import {router} from "next/client";
+import {useRouter} from "next/router";
 
 interface IProps {
     displayName: string
@@ -12,14 +12,14 @@ interface IProps {
 export function MainHeader(props: IProps) {
 
     const {displayName} = props;
-
+    const router = useRouter();
     const logout = (): void => {
         localStorage.clear();
         router.push('/');
     }
 
     return (
-        <Box width={'100%'} display={'flex'} justifyContent={'space-between'}>
+        <Box width={'100%'} display={'flex'} justifyContent={'space-between'} mt={'.5rem'}>
             <Stack direction={'row'} spacing={4}>
                 <Stack direction={'row'} spacing={1} sx={{
                     display: 'flex',

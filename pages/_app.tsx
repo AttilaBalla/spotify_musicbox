@@ -8,6 +8,7 @@ import {
 } from '@tanstack/react-query'
 import {makeStyles} from "tss-react/mui";
 import {createEmotionSsrAdvancedApproach} from "tss-react/next/pagesDir";
+import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
 
 
 const queryClient = new QueryClient({
@@ -38,11 +39,18 @@ function CustomApp({Component, pageProps}: AppProps) {
             <ThemeProvider theme={theme}>
                 <CssBaseline/>
                 <main>
-                    <Container>
+                    <Container sx={
+                        {
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'center',
+                            width: '100%'
+                        }}>
                         <Component {...pageProps} />
                     </Container>
                 </main>
             </ThemeProvider>
+            <ReactQueryDevtools initialIsOpen={false}/>
         </QueryClientProvider>
     )
 }

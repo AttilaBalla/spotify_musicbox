@@ -1,7 +1,7 @@
 import type {NextPage} from 'next'
 import {useRouter} from "next/router";
 import {constructAuthorizationUrl, parseHashParamsFromUrl} from "../utilities/helpers";
-import {LoginBox} from "../material/loginBox";
+import {LoginBox} from "../material/LoginBox";
 
 
 const Home: NextPage = () => {

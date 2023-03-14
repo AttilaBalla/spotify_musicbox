@@ -37,12 +37,12 @@ export function getUserProfile(): Promise<ISpotifyUser> {
     return request<ISpotifyUser>('/me', 'GET');
 }
 
-export function getUsersPlaylists(): Promise<ISpotifyPlaylistInfo<ISpotifyPlaylist>[]> {
-    return request<ISpotifyPlaylistInfo<ISpotifyPlaylist>[]>(`/me/playlists`, 'GET');
+export function getUsersPlaylists(): Promise<ISpotifyPlaylistInfo<ISpotifyPlaylist[]>> {
+    return request<ISpotifyPlaylistInfo<ISpotifyPlaylist[]>>(`/me/playlists`, 'GET');
 }
 
-export function getPlaylistItems(playlistId: string, limit: number, offset: number): Promise<ISpotifyPlaylistInfo<ISpotifyTrackInfo>> {
-    return request<ISpotifyPlaylistInfo<ISpotifyTrackInfo>>(`/playlists/${playlistId}/tracks?limit=${limit}&offset=${offset}`, 'GET');
+export function getPlaylistItems(playlistId: string, limit: number, offset: number): Promise<ISpotifyPlaylistInfo<ISpotifyTrackInfo[]>> {
+    return request<ISpotifyPlaylistInfo<ISpotifyTrackInfo[]>>(`/playlists/${playlistId}/tracks?limit=${limit}&offset=${offset}`, 'GET');
 }
 
 export function getRecentlyPlayedTracks(): Promise<ISpotifyRecentTracks> {
